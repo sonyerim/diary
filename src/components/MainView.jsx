@@ -7,11 +7,9 @@ function MainView(props) {
   const month = now.getMonth() + 1;
   const year = now.getFullYear();
 
-  const answers =   JSON.parse(localStorage.getItem("diary") || "{}");
+  const answers = JSON.parse(localStorage.getItem("diary") || "{}");
   const [questions, setQuestions] = useState();
-  const [input, setInput] = useState(
-    answers[date]
-  );
+  const [input, setInput] = useState(answers[date]);
 
   useEffect(() => {
     fetch(
@@ -19,26 +17,29 @@ function MainView(props) {
     )
       .then((res) => res.json())
       .then((data) => {
-        setQuestions(data)
+        setQuestions(data);
       });
-  }, [])
+  }, []);
   //console.log("render");
 
-  if(!questions) {
+  if (!questions) {
     return null;
   }
 
   return (
     <>
       <div className="header">
-        <div>{year}년 {month}월 {date}일</div>
+        <div>
+          {year}년 {month}월 {date}일
+        </div>
         <div>
           <button
             className="history-btn"
             onClick={() => {
               // HistoryView 화면으로 전환
               props.setView("History");
-            }}>
+            }}
+          >
             기록 보기
           </button>
         </div>
@@ -50,8 +51,8 @@ function MainView(props) {
             const value = e.target.value;
             setInput(value);
             localStorage.setItem(
-              "diary", 
-              JSON.stringify({...answers, [date]: value})
+              "diary",
+              JSON.stringify({ ...answers, [date]: value })
             );
           }}
         />
